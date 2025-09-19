@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Confession ❤️</title>
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- add refined fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* filepath: c:\Users\tyytytyty\Pictures\Screenshots\New folder\indexx.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* --- REPLACED/ADDED: improved theme & typography --- */
+        :root{
+          --bg-a: #0f0711;
+          --bg-b: #351b6a;
+          --bg-c: #ff7ab6;
+          --accent: #ffd1e8;
+          --glass: rgba(255,255,255,0.04);
+          --muted: rgba(255,255,255,0.85);
+          --card-radius: 18px;
+          --max-width: 1200px;
+          --shadow: 0 12px 40px rgba(20,10,40,0.5);
+        }
+
+        /* fonts */
+        body { font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; color:var(--muted); }
+
+        /* richer gradient background */
+        body{
+          background: radial-gradient(1000px 600px at 10% 20%, rgba(255,122,182,0.06), transparent 10%),
+                  linear-gradient(180deg, var(--bg-a) 0%, var(--bg-b) 45%, #12021a 100%);
+          -webkit-font-smoothing:antialiased;
+          -moz-osx-font-smoothing:grayscale;
+        }
+
+        /* sparkle overlay (soft animated dots) */
+        .sparkles{
+          position:fixed;
+          inset:0;
+          pointer-events:none;
+          z-index:0;
+          background-image:
+            radial-gradient(circle at 10% 20%, rgba(255,255,255,0.04) 0px, transparent 10px),
+            radial-gradient(circle at 80% 80%, rgba(255,200,240,0.03) 0px, transparent 12px),
+            radial-gradient(circle at 60% 30%, rgba(180,150,255,0.02) 0px, transparent 14px);
+          background-repeat: repeat;
+          mix-blend-mode: screen;
+          opacity: 0.9;
+          animation: sparkleShift 20s linear infinite;
+        }
+        @keyframes sparkleShift { 0% { transform: translateY(0); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0); } }
+
+        /* hero typography */
+        .hero h1 { font-family: "Playfair Display", serif; font-size:36px; letter-spacing:0.2px; color:#fff; line-height:1.05; }
+        .hero p.lead { font-size:16px; color: rgba(255,255,255,0.9); max-width:760px; margin: 0 auto 24px; }
+
+        /* improved big button */
+        .big-btn{
+          font-family: "Playfair Display", serif;
+          font-size:18px;
+          padding:16px 26px;
+          border-radius:999px;
+          background: linear-gradient(90deg, rgba(255,122,182,0.16), rgba(107,44,255,0.14));
+          border: 1px solid rgba(255,255,255,0.06);
+          box-shadow: 0 14px 40px rgba(107,44,255,0.12), 0 6px 18px rgba(255,122,182,0.06);
+          transition: transform .25s, box-shadow .25s;
+        }
+        .big-btn:hover{ transform: translateY(-6px) scale(1.02); box-shadow: 0 22px 56px rgba(107,44,255,0.22); }
+
+        /* content blocks: glass, rounded, pop-in animation */
+        .block{
+          background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+          border: 1px solid rgba(255,255,255,0.04);
+          backdrop-filter: blur(8px);
+          transition: transform 0.9s cubic-bezier(.2,.9,.2,1), opacity 0.7s;
+          transform-origin: 50% 60%;
+        }
+        .block.visible{ transform: translateY(0) scale(1); opacity: 1; }
+        .block { transform: translateY(22px) scale(.995); opacity: 0; }
+
+        /* subtle heading style */
+        .block h3{ font-family: "Playfair Display", serif; font-size:18px; color:var(--accent); }
+
+        /* nicer Tarif (compliments) style */
+        .tarif { height:100px; display:flex; align-items:center; justify-content:center; position:relative; }
+        .tarif-text { font-family:"Playfair Display", serif; font-size:1.05rem; padding: 10px 16px; border-radius:12px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); box-shadow: 0 8px 28px rgba(0,0,0,0.5); opacity:0; transform: translateY(12px); transition: all .6s; }
+        .tarif-text.active { opacity:1; transform: translateY(0); }
+
+        /* content block entrance for indexx main (fallback) */
+        .content-block { transition: all .7s cubic-bezier(.2,.9,.2,1); transform: translateY(18px); opacity: 0; }
+        .content-block.show { transform: translateY(0); opacity: 1; }
+
+        /* footer note, smaller and elegant */
+        .footer-note { color: rgba(255,255,255,0.48); }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        /* Particles Background */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Music Control */
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 35px rgba(31, 38, 135, 0.5);
+        }
+
+        .music-control i {
+            font-size: 18px;
+            color: white;
+        }
+
+        /* Photo Intro Sequence */
+        .photo-intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .photo-container {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+        }
+
+        .photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        .photo-glow {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcf7f, #4d79ff);
+            border-radius: 25px;
+            z-index: -1;
+            filter: blur(15px);
+            opacity: 0.7;
+            animation: glowPulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            0% { opacity: 0.5; }
+            100% { opacity: 0.9; }
+        }
+
+        /* Main Content */
+        .main-content {
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 20px 50px;
+        }
+
+        /* Central Button */
+        .confession-button {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 80px;
+        }
+
+        .btn-confession {
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d);
+            border: none;
+            padding: 20px 40px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.4);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-confession:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(255, 107, 107, 0.6);
+        }
+
+        .btn-confession::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-confession:hover::before {
+            left: 100%;
+        }
+
+        /* Content Blocks */
+        .content-block {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .content-block h2 {
+            color: white;
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .content-block p, .content-block li {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* Typewriter Effect */
+        .typewriter {
+            font-size: 18px;
+            color: white;
+            text-align: center;
+            min-height: 100px;
+        }
+
+        /* Carousel */
+        .carousel-container {
+            position: relative;
+            height: 150px;
+            overflow: hidden;
+        }
+
+        .carousel-item {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+        }
+
+        .carousel-item p {
+            max-width: 80%;
+            text-align: center;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        /* Floating Hearts */
+        .floating-heart {
+            position: fixed;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 20px;
+            pointer-events: none;
+            z-index: 5;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%, 90% { opacity: 1; }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Q&A Styling */
+        .qa-item {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .qa-question {
+            font-weight: bold;
+            color: #ffd93d;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .qa-answer {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Penguin Styles */
+        #penguin {
+            position: fixed;
+            width: 120px;
+            height: auto;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(100px, 100px);
+        }
+        #penguin img {
+            width: 100%;
+            height: auto;
+            user-select: none;
+            transition: transform 0.2s ease-in-out;
+        }
+        .waddle img { animation: waddle 0.4s infinite alternate ease-in-out; }
+        @keyframes waddle {
+            from { transform: rotate(-5deg) translateY(0px); }
+            to { transform: rotate(5deg) translateY(3px); }
+        }
+        .idle img { animation: bounce 1s infinite alternate ease-in-out; }
+        @keyframes bounce {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-15px); }
+        }
+        .sleeping img { opacity: 0.7; filter: grayscale(50%);}
+        .zzz {
+            position: fixed;
+            font-size: 20px;
+            color: white;
+            text-shadow: 0 0 5px black;
+            animation: floatUp 2s ease-in-out infinite;
+            z-index: 10001;
+        }
+        .flip img { animation: flip 0.8s ease-in-out; }
+        @keyframes flip {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(180deg) scale(1.1); }
+            100% { transform: rotateY(360deg); }
+        }
+        .belly img { animation: belly 1s ease forwards; }
+        @keyframes belly {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(90deg); }
+        }
+        .jump img { animation: jump 0.6s ease-out; }
+        @keyframes jump {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-60px) scale(1.1); }
+            100% { transform: translateY(0); }
+        }
+        .spin img { animation: spin 0.8s linear; }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .message {
+            position: fixed;
+            font-size: 18px;
+            padding: 6px 12px;
+            border-radius: 15px;
+            color: white;
+            animation: floatUp 2s ease forwards;
+            z-index: 9999;
+        }
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-100px) scale(1.2); }
+        }
+
+        /* Hide confession initially */
+        #confessionBlock {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+        
+        #confessionBlock.visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- ADDED: comments UI styles --- */
+        #commentsSection {
+          background: rgba(255,255,255,0.03);
+          border: 1px solid rgba(255,255,255,0.04);
+          padding: 20px;
+          border-radius: 14px;
+          margin-top: 30px;
+        }
+        #commentList { list-style: none; padding: 0; margin: 12px 0 0 0; max-height: 280px; overflow:auto; }
+        .commentItem {
+          padding: 10px 12px;
+          margin-bottom: 10px;
+          border-radius: 10px;
+          background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+          box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+          font-size: 14px;
+        }
+        .commentMeta { font-size:12px; color: rgba(255,255,255,0.6); margin-bottom:6px; }
+        #commentForm { display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap; }
+        #commentForm input, #commentForm textarea {
+          background: rgba(0,0,0,0.18);
+          border: 1px solid rgba(255,255,255,0.04);
+          color: white;
+          padding:8px 10px;
+          border-radius:10px;
+          font-size:14px;
+        }
+        #commentForm input { width: 160px; }
+        #commentForm textarea { flex:1; min-height:64px; resize:vertical; }
+        #commentSubmit {
+          background: linear-gradient(45deg,#ff6b6b,#ffd93d);
+          color:#fff;
+          border:none;
+          padding:10px 14px;
+          border-radius:10px;
+          cursor:pointer;
+        }
+
+        /* Enhanced comment block UI */
+        .confession-comments,
+        #aboutYouCommentsSection,
+        #doubtCommentsSection {
+            background: rgba(255,255,255,0.08);
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(31,38,135,0.18);
+            border: 1px solid rgba(255,255,255,0.18);
+            margin: 24px 0 32px 0;
+            padding: 24px 18px 18px 18px;
+            backdrop-filter: blur(8px);
+            transition: box-shadow .3s;
+        }
+        .confession-comments:hover,
+        #aboutYouCommentsSection:hover,
+        #doubtCommentsSection:hover {
+            box-shadow: 0 16px 48px rgba(31,38,135,0.28);
+        }
+        .confession-comments h3,
+        #aboutYouCommentsSection h2,
+        #doubtCommentsSection h2 {
+            color: #ffd93d;
+            font-family: "Playfair Display", serif;
+            font-size: 20px;
+            margin-bottom: 12px;
+            text-align: center;
+            letter-spacing: 0.5px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .confessionCommentForm,
+        #aboutYouCommentForm,
+        #doubtCommentForm {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .confessionCommentForm input,
+        .confessionCommentForm textarea,
+        #aboutYouCommentForm input,
+        #aboutYouCommentForm textarea,
+        #doubtCommentForm input,
+        #doubtCommentForm textarea {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.18);
+            color: #fff;
+            padding: 10px 12px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border .2s, box-shadow .2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .confessionCommentForm input,
+        #aboutYouCommentForm input,
+        #doubtCommentForm input {
+            width: 160px;
+        }
+        .confessionCommentForm textarea,
+        #aboutYouCommentForm textarea,
+        #doubtCommentForm textarea {
+            flex: 1;
+            min-height: 60px;
+            resize: vertical;
+        }
+        .confessionCommentSubmit,
+        #aboutYouCommentSubmit,
+        #doubtCommentSubmit {
+            background: linear-gradient(90deg,#ff6b6b,#ffd93d);
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: "Playfair Display", serif;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(255,107,107,0.18);
+            transition: background .2s, box-shadow .2s, transform .2s;
+        }
+        .confessionCommentSubmit:hover,
+        #aboutYouCommentSubmit:hover,
+        #doubtCommentSubmit:hover {
+            background: linear-gradient(90deg,#ffd93d,#ff6b6b);
+            box-shadow: 0 8px 24px rgba(255,107,107,0.28);
+            transform: translateY(-2px) scale(1.04);
+        }
+        .confessionCommentList,
+        #aboutYouCommentList,
+        #doubtCommentList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 260px;
+            overflow-y: auto;
+        }
+        .commentItem {
+            background: linear-gradient(90deg,rgba(255,255,255,0.10),rgba(255,255,255,0.04));
+            border-radius: 12px;
+            margin-bottom: 12px;
+            padding: 12px 14px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+            border: 1px solid rgba(255,255,255,0.12);
+            font-size: 15px;
+            color: #fff;
+            transition: box-shadow .2s;
+        }
+        .commentItem:hover {
+            box-shadow: 0 6px 24px rgba(255,107,107,0.18);
+        }
+        .commentMeta {
+            font-size: 13px;
+            color: #ffd93d;
+            margin-bottom: 4px;
+            font-family: "Poppins",sans-serif;
+            letter-spacing: 0.2px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 80px 15px 30px;
+            }
+
+            .content-block {
+                padding: 25px;
+                margin-bottom: 25px;
+            }
+
+            .content-block h2 {
+                font-size: 24px;
+            }
+
+            .btn-confession {
+                padding: 15px 30px;
+                font-size: 20px;
+            }
+
+            .photo-container {
+                width: 250px;
+                height: 350px;
+            }
+
+            .music-control {
+                width: 45px;
+                height: 45px;
+                top: 15px;
+                right: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content-block {
+                padding: 20px;
+            }
+
+            .content-block h2 {
+                font-size: 22px;
+            }
+
+            .photo-container {
+                width: 200px;
+                height: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
+    <!-- Penguin Cursor -->
+    <div id="penguin">
+        <img src="10543319-removebg-preview.png" alt="Penguin">
+    </div>
+
+    <!-- Background Music -->
+    <audio id="backgroundMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Music Control -->
+    <div class="music-control" id="musicToggle">
+        <i class="fas fa-volume-up" id="musicIcon"></i>
+    </div>
+
+    <!-- Photo Intro Sequence -->
+    <div class="photo-intro" id="photoIntro">
+        <div class="photo-container" id="photo1">
+            <div class="photo-glow"></div>
+            <img src="https://via.placeholder.com/300x400/ff6b6b/ffffff?text=Photo+1" alt="Photo 1">
+        </div>
+        <div class="photo-container" id="photo2">
+            <div class="photo-glow"></div>
+            <img src="https://via.placeholder.com/300x400/4ecdc4/ffffff?text=Photo+2" alt="Photo 2">
+        </div>
+        <div class="photo-container" id="photo3">
+            <div class="photo-glow"></div>
+            <img src="https://via.placeholder.com/300x400/45b7d1/ffffff?text=Photo+3" alt="Photo 3">
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="container">
+            <!-- Central Button -->
+            <div class="confession-button">
+                <button class="btn-confession" id="confessionBtn">
+                    Click for My Confession ❤️
+                </button>
+            </div>
+
+            <!-- 7 Confession Blocks + their comment blocks (all hidden initially) -->
+            <div id="confessionsWrapper" style="display:none;">
+                <!-- Confession 1 -->
+                <div class="content-block confession-block" id="confessionBlock1">
+                    <h2>Confession 1</h2>
+                    <div class="typewriter">So, let's start. For a while now, while we've been talking, I’ve really come to admire your behavior and personality, honestly. I know we've only interacted online, but that doesn't change the fact that if you're a nice person here, you’ll be the same in real life too. You might be wondering about this confession. It's not just a special moment, but I know we've exchanged "I love you" messages, and still, I think a proper confession is needed to avoid any confusion. This isn't a proposal, or maybe it is—I don’t really know. I just wanted to say a lot of things to you. I know I’ve been through a lot, and I’m still going through tough times now. I’ve got responsibilities, suffering, and pressure, just like you do. It can be difficult to find someone who truly understands you, cares for you, talks to you, and thinks about you all day. All the signs are there, and I feel love in me, honestly. I hope you feel the same way too. I know I’m not pretty, but you always call me handsome and hot. The reality is, I don't feel that way, but I swear to God, I’m in love with you. I’m a good guy, and I’ll always be a good guy for you. For example, if I accidentally touch a girl's leg or if a girl touches mine by mistake, I would simply move my feet with gratitude and purity—nothing more. I don’t hit on girls, no matter how much they hit on me, even in jokes or friendly banter. You might be wondering how to respond, and what you should say. Let me make it clear: there’s a comment section just below this website where you can write. Don’t worry about reopening the website—I made it for you. Honestly, I wish I could buy you a bouquet of flowers, but since we live far apart, the best I can give you is this website. I know it might not look very pretty or fancy or rich, but I swear I’ve been working on this for over a week, and I’ve probably spent about 20-25 hours on it. I know time isn’t everything, but I wanted to show you my efforts.</div>
+                </div>
+                <section class="confession-comments" id="confessionCommentSection1">
+                    <h3 style="text-align:center;margin-bottom:8px;">Comment on Confession 1</h3>
+                    <form class="confessionCommentForm" data-confession="1" onsubmit="return false;">
+                        <input type="text" class="confessionCommentName" placeholder="Your name" maxlength="40" required>
+                        <textarea class="confessionCommentText" placeholder="Your thoughts..." maxlength="400" required></textarea>
+                        <button type="button" class="confessionCommentSubmit">Post</button>
+                    </form>
+                    <ul class="confessionCommentList" aria-label="Confession 1 Comments"></ul>
+                </section>
+                <!-- Confession 2 -->
+                <div class="content-block confession-block" id="confessionBlock2">
+                    <h2>Confession 2</h2>
+                    <div class="typewriter">Plus, there were so many errors on this site, I can't even explain. But anyway, let’s get back to the point. So, what does love mean to me? Honestly, love is something really nice, but it’s not just about one thing. For me, love isn’t just about how much time you spend with someone, it’s about how much time you’re willing to spend on that person. Sometimes, life and situations make it hard for us to give all our time, but that doesn’t mean you love them any less. It’s about the loyalty, and most importantly, it’s about making the decision to never fall back or give up on the other person, no matter what happens. No matter what happens. I want to stress that because sometimes life throws things at us that make us question everything, but love means staying true to each other no matter the challenges. I know we’ve both been through a lot in our own ways. And I understand that it’s not always easy to just be there for someone or to express how we feel, especially when we’re both dealing with our own responsibilities, struggles, and pressures. But love is about sticking together, even in those moments. What I’m asking from you, is simple: I want you—the real you. Your truth, your lies, your trust, and the decision to be honest and open with me. I don’t want perfection. I don’t need someone who has it all figured out. I just need you to be genuine and make that decision to be true to what you feel, no matter how complicated it might seem. If you can do that, then that’s all I need. No pressure. But if you’re willing to, then I know we can make something special out of this. Otherwise, well... it’s okay too.</div>
+                </div>
+                <section class="confession-comments" id="confessionCommentSection2">
+                    <h3 style="text-align:center;margin-bottom:8px;">Comment on Confession 2</h3>
+                    <form class="confessionCommentForm" data-confession="2" onsubmit="return false;">
+                        <input type="text" class="confessionCommentName" placeholder="Your name" maxlength="40" required>
+                        <textarea class="confessionCommentText" placeholder="Your thoughts..." maxlength="400" required></textarea>
+                        <button type="button" class="confessionCommentSubmit">Post</button>
+                    </form>
+                    <ul class="confessionCommentList" aria-label="Confession 2 Comments"></ul>
+                </section>
+                <!-- Confession 3 -->
+                <div class="content-block confession-block" id="confessionBlock3">
+                    <h2>Confession 3</h2>
+                    <div class="typewriter">I honestly don’t even know how to begin this... I’ve been sitting with these thoughts for days—maybe even weeks—playing every word over and over in my head. Rewinding our conversations, overanalyzing the way you talk, the way you respond, the way you show up. Overthinking is nothing new for me, you already know that by now. But this—this—is something I just can’t hold inside anymore. There’s no dramatic moment that triggered it. No perfect song playing in the background. It’s just… this quiet ache that’s been growing in me. This weight on my chest that says, “You need to say it. For real this time.” So here it goes. When we first started talking, I didn’t understand you. I mean, I was genuinely confused. You were warm—so warm. You showed up with softness, with light, with this kindness that felt so rare, I didn’t know how to receive it. I kept thinking to myself, “Why is she being so good to me? She doesn’t even know me like that.” And I’ll admit… I probably acted a little distant, maybe even sad or withdrawn at times. Not because I didn’t care—but because I didn’t know what to do with someone so real. I had never met someone like you. You didn’t just say nice things—you meant them. You didn’t just show kindness—you are kindness. And the most amazing part? You never changed. You never flinched. You stayed. Steady. Soft. Present. That’s when it hit me—you’re not just a kind person. You’re something rare. It’s not just your voice, your face, or the way you laugh (though all of that is beautiful too). It’s the way you carry sincerity like it’s stitched into your soul. The way you look at people like they matter, even when they don’t see it in themselves. You see people, like really see them. You listened to me—not because you had to, but because that’s who you are. You made me feel noticed in a time when I wasn’t even paying attention to myself. You reminded me of what calm feels like… in the middle of my own chaos. And you didn’t even try to “fix” me. You just made space. And that space? It felt like home.</div>
+                </div>
+                <section class="confession-comments" id="confessionCommentSection3">
+                    <h3 style="text-align:center;margin-bottom:8px;">Comment on Confession 3</h3>
+                    <form class="confessionCommentForm" data-confession="3" onsubmit="return false;">
+                        <input type="text" class="confessionCommentName" placeholder="Your name" maxlength="40" required>
+                        <textarea class="confessionCommentText" placeholder="Your thoughts..." maxlength="400" required></textarea>
+                        <button type="button" class="confessionCommentSubmit">Post</button>
+                    </form>
+                    <ul class="confessionCommentList" aria-label="Confession 3 Comments"></ul>
+                </section>
+                <!-- Confession 4 -->
+                <div class="content-block confession-block" id="confessionBlock4">
+                    <h2>Confession 4</h2>
+                    <div class="typewriter">Why You? It’s not because I’m lonely. It’s not because I need someone to “complete” me. It’s not even because you treat me well (though, God, you really do). It’s because my heart picked you. And for once in my life, I didn’t want to fight it. There’s something about you that feels right. Not perfect, not fairytale-like—but real, grounding, deep. I don’t want to love just anyone… I want to love you. I want to show up for you. Not out of obligation, but out of the sheer joy of seeing you smile, of being part of your peace. I want to be the one who protects your softness in a world that keeps trying to harden it. And yeah, I know I might not be “perfect” in the way you imagine, and I know I’ve said things like “I’m not handsome” or “I’m not that guy,” but for you? I’d be the best version of me. Not to impress, but because you inspire that. You make me want to be a better man. I can cry in front of you. I can be small. I can be loud. I can be confused. And you still... see me. That’s rare. That’s priceless. What Love Means to Me Love, to me, isn’t just about time spent together. It’s about the time you want to spend—even when life doesn’t make it easy. It’s about loyalty. It’s about the choice—to not walk away, to not give up, no matter what happens. I repeat—no matter what happens. Love is that steady decision to stay. To keep showing up. To keep choosing each other, again and again, even on the hard days. That’s all I want from you. Just you—your truth, your flaws, your honesty, your confusion, even your silence sometimes. I don’t need grand gestures or fancy promises. Just your trust. Just that small, quiet decision to stay and grow. And if you can give me that, I’ll give you everything I’ve got. From the Heart — with Love & Code So, I built something for you. Quietly. With my own two hands. Line by line. A small corner of the internet, just for you. Not for attention. Not for followers or likes. Just... for this. This isn’t just HTML or CSS. It’s my way of saying: You matter. You changed something in me. You made me believe again. It’s not perfect. It might not look like a million-dollar website. But I put in the hours—20, maybe 25, or more. Through every bug, every error, every frustration—I kept going. Not because I had to. But because you’re worth every second. Every glitch. Every line of code. You brought out something I didn’t know I still had—the desire to create something real.</div>
+                </div>
+                <section class="confession-comments" id="confessionCommentSection4">
+                    <h3 style="text-align:center;margin-bottom:8px;">Comment on Confession 4</h3>
+                    <form class="confessionCommentForm" data-confession="4" onsubmit="return false;">
+                        <input type="text" class="confessionCommentName" placeholder="Your name" maxlength="40" required>
+                        <textarea class="confessionCommentText" placeholder="Your thoughts..." maxlength="400" required></textarea>
+                        <button type="button" class="confessionCommentSubmit">Post</button>
+                    </form>
+                    <ul class="confessionCommentList" aria-label="Confession 4 Comments"></ul>
+                </section>
+                <!-- Confession 5 -->
+                <div class="content-block confession-block" id="confessionBlock5">
+                    <h2>Confession 5</h2>
+                    <div class="typewriter">The Honest Truth I’m nervous writing this. I don’t know how it’ll land. I don’t know what you’ll feel, or if you’ll even respond. But I had to let it out. I had to speak my truth—even if it scares me. Even if it risks everything. Because loving you silently? That’s not me. I’d rather be honest and get hurt than stay quiet and always wonder what if. So Here’s My Question… Would you be open to trying something real with me? A long-distance relationship, maybe. Yeah, I know it’s not easy. It’s not a fairy tale. But I’m not asking for perfection. I’m just asking for three things: 💙 Loyalty – no games, no maybes. Just real, mutual respect. ❤️ Love – not the flashy kind. The quiet kind. The kind that stays. 🧠 Learning – because we’ll make mistakes. But I promise to grow through them, with you. And if your answer is yes—even just a little yes—I’m ready to give you everything I have. Not perfection, but presence. Not pressure, but patience. Not control, but connection. And if you’re not ready, or this isn’t what you want—that’s okay too. I’ll still care. I’ll still admire you. Nothing changes that. But if even a small part of you feels the same… Then let’s start something real. Something honest. Something ours. 💌 With all my heart, — Harsh Uchiha</div>
+                </div>
+                <section class="confession-comments" id="confessionCommentSection5">
+                    <h3 style="text-align:center;margin-bottom:8px;">Comment on Confession 5</h3>
+                    <form class="confessionCommentForm" data-confession="5" onsubmit="return false;">
+                        <input type="text" class="confessionCommentName" placeholder="Your name" maxlength="40" required>
+                        <textarea class="confessionCommentText" placeholder="Your thoughts..." maxlength="400" required></textarea>
+                        <button type="button" class="confessionCommentSubmit">Post</button>
+                    </form>
+                    <ul class="confessionCommentList" aria-label="Confession 5 Comments"></ul>
+                </section>
+                <!-- Confession 6 -->
+                <div class="content-block confession-block" id="confessionBlock6">
+                    <h2>Confession 6</h2>
+                    <div class="typewriter">I’ve been meaning to say this for a long time now, but I wanted to find the right words. Not to impress you, not to convince you, but to be honest—with myself, and with you. I just... love you. Not in a shallow way. Not in a "just because" kind of way. I love you because of how you treat me. And bro, let me say it—it's freaking incredible. I’ve been in relationships before. I’ve met people who were sweet, thoughtful, even loving. But the way you treat me? It’s different. It’s special. It’s the kind of treatment I used to dream of but never believed I’d get. The way you care, the way you respond, the way you see me—it’s everything I ever wanted, and more. Even my ex, who I thought cared a lot, never treated me the way you do. Never made me feel this seen, this safe, this understood. And what blows my mind even more is… you do it so effortlessly. So naturally. You treat me exactly the way I treat you—and that’s what makes it so damn special. It’s like... we’re on the same wavelength. Emotionally. Spiritually. Soulfully. And yeah, I’ve noticed the signs. The hints. The way you talk, the little things you say—I picked up on all of it. That’s part of why I’m saying this now. Because I didn’t want to leave anything unsaid. Because you deserve to know exactly what you mean to me. Now, let me be real about my expectations too. I know love shouldn’t come with conditions, and in true love, you don’t really “ask” for things—you just give. But still, I want to be honest. If you ever feel like I’m not giving you enough time, if you feel I’m distant or distracted—tell me. If your feelings change, or if life, family, or anything else makes it hard for you to stay in this… just tell me. I won’t hold it against you. I won’t hate you. I won’t stop loving you. Because real love isn’t about control. It’s about truth. And I promise you this: if you ever needed time or space, I would wait for you. Forever, if I had to. I swear—I have no grudges, no complaints, no accusations. Just love. That constant, unwavering kind. Yes, I’ve had a good relationship in the past. You could even say it was beautiful while it lasted. But it ended in a mess. And you know what? That doesn’t make me afraid anymore. Because who said that just because it didn’t work out the first time, it can’t work out even better the second time? I want to know you more. All of you. Your thoughts. Your fears. Your dreams. Your expectations. I want to know what you need, so I can be that for you. So I can work on myself, grow, evolve—for us. Because that’s the kind of person I am. I don’t give up. I don’t walk away when things get hard. I don’t bail on the people I love. And even if one day you hurt me—even if things got messy, and trust me, I know you won’t—I would still choose love. I’d still choose you. The only thing that truly breaks me is dishonesty. False promises. That hurts more than anything. If you say we’re going somewhere together, and I’ve spent the whole day imagining it—what I’d wear, what we’d eat, what we’d talk about—and then you cancel on me last minute… that breaks me. Not because you changed your mind, but because I hold onto small plans like they’re everything. I cherish the tiniest things. So when they fall apart, they take pieces of me with them. But you know that. You already know how I’m wired. You’ve seen me—really seen me. And still stayed. So now, I want to ask—finally, fully, fearlessly:</div>
+                </div>
+                <section class="confession-comments" id="confessionCommentSection6">
+                    <h3 style="text-align:center;margin-bottom:8px;">Comment on Confession 6</h3>
+                    <form class="confessionCommentForm" data-confession="6" onsubmit="return false;">
+                        <input type="text" class="confessionCommentName" placeholder="Your name" maxlength="40" required>
+                        <textarea class="confessionCommentText" placeholder="Your thoughts..." maxlength="400" required></textarea>
+                        <button type="button" class="confessionCommentSubmit">Post</button>
+                    </form>
+                    <ul class="confessionCommentList" aria-label="Confession 6 Comments"></ul>
+                </section>
+                <!-- Confession 7 -->
+                <div class="content-block confession-block" id="confessionBlock7">
+                    <h2>Confession 7</h2>
+                    <div class="typewriter">Will you be the sun to this sunflower? 🌻 Will you stay beside me through the good days and the bad? Will you let me look at you like you're the most beautiful thing I've ever seen—because to me, you are? Will you let me love you, support you, fight for you, and protect your heart like it’s the most sacred thing I’ve ever held? I know I’m not perfect. I don’t have it all figured out. But for you? I’ll try. I’ll work. I’ll grow. I’ll become the best version of myself, not out of pressure, but out of love. Because I want you. Only you. No one else. You belong with me. Not in a possessive way—but in a soul-deep, destined kind of way. So here it is. I love you. Three words. Simple, but sacred. I know deep down, you love me too. I feel it. Every day. But I still want to hear it. I want it to be real, spoken, held. So will you be mine? Will you be my person? Will you be my partner—not just in love, but in life? Through calls and texts, through distance and time zones, through quiet nights and silly fights, through the loneliness, through the longing, through it all—will you be my constant? Because if your answer is yes— Then I swear, on everything I have, everything I am— I’ll love you like you’ve never been loved before. Gently. Fiercely. Fully. Forever. – Harsh Uchiha (with all my love, and every line of code I wrote for you) 💌</div>
+                </div>
+                <section class="confession-comments" id="confessionCommentSection7">
+                    <h3 style="text-align:center;margin-bottom:8px;">Comment on Confession 7</h3>
+                    <form class="confessionCommentForm" data-confession="7" onsubmit="return false;">
+                        <input type="text" class="confessionCommentName" placeholder="Your name" maxlength="40" required>
+                        <textarea class="confessionCommentText" placeholder="Your thoughts..." maxlength="400" required></textarea>
+                        <button type="button" class="confessionCommentSubmit">Post</button>
+                    </form>
+                    <ul class="confessionCommentList" aria-label="Confession 7 Comments"></ul>
+                </section>
+            </div>
+
+            <!-- About You Block and its comment block -->
+            <div class="content-block" id="aboutYouBlock">
+                <h2>About You</h2>
+                <div>
+                    <p>
+                        This space is dedicated to you! Write something about yourself, your dreams, your favorite things, or anything you want to share. This is your box, your story, your words. Let this be a place where you can express yourself freely and beautifully.
+                    </p>
+                </div>
+            </div>
+            <section id="aboutYouCommentsSection" aria-live="polite">
+              <h2 style="text-align:center;margin-bottom:10px">Leave a Note About Yourself</h2>
+              <form id="aboutYouCommentForm" onsubmit="return false;">
+                <input id="aboutYouCommentName" type="text" placeholder="Your name" maxlength="40" required>
+                <textarea id="aboutYouCommentText" placeholder="Share something about you..." maxlength="400" required></textarea>
+                <button id="aboutYouCommentSubmit" type="button">Post</button>
+              </form>
+              <ul id="aboutYouCommentList" aria-label="About You Comments list"></ul>
+            </section>
+
+            <!-- Q&A Section -->
+            <div class="content-block" id="qaBlock">
+                <h2>Questions & Answers</h2>
+                <div class="qa-item">
+                    <div class="qa-question">Q: Is this confession for real?</div>
+                    <div class="qa-answer">A: 100% real, from the bottom of my heart and every bit of my soul and feeling.</div>
+                </div>
+                <div class="qa-item">
+                    <div class="qa-question">Q: Why did you confess on this date?</div>
+                    <div class="qa-answer">A: So darling, today is a special day called the equinox, when day and night are equal, and it only happens once a year. That's why this date felt perfect—there should be equality between us, with no one above the other. Also, it's the start of fall, and I wanted to begin this season with my best, bestest girl by my side. Plus, today marks the start of Navratri, which brings blessings from Mata Rani, so I felt this would be the best time.</div>
+                </div>
+                <div class="qa-item">
+                    <div class="qa-question">Q: What if I fall in love with someone else?</div>
+                    <div class="qa-answer">A: If that ever happens, my love, it’s okay. Truly. I’m not here to chain you—I'm here to support you, no matter what path you walk. Neither of us is perfect, and we never will be, and I’m not expecting forever if life doesn’t give us that. I just want you to be real with me and with yourself. Do what your heart says. I’ll never hold you back or make you feel guilty. All I ask is honesty. And no matter what, I’ll carry the memories of us like a soft song I once loved.</div>
+                </div>
+                <div class="qa-item">
+                    <div class="qa-question">Q: Why a website?</div>
+                    <div class="qa-answer">A: Because sometimes words fall short, but code allows me to show you how much you mean to me in a magical, lasting way. There's nothing better I could give you than this.</div>
+                </div>
+                <div class="qa-item">
+                    <div class="qa-question">Q: What happens if I say yes?</div>
+                    <div class="qa-answer">A: Then my world will be brighter, and our story will have the happiest next chapter. The mistakes we made earlier will be our lessons, and we will support each other to grow like no one else.</div>
+                </div>
+                <div class="qa-item">
+                    <div class="qa-question">Q: What if I need time?</div>
+                    <div class="qa-answer">A: Take all the time you need. My feelings—and this website—aren’t going anywhere.</div>
+                </div>
+                <div class="qa-item">
+                    <div class="qa-question">Q: Can I revisit this page?</div>
+                    <div class="qa-answer">A: Always! This is your space, your story, your answer—whenever you’re ready.</div>
+                </div>
+                <div class="qa-item">
+                    <div class="qa-question">Q: What if things go wrong between us?</div>
+                    <div class="qa-answer">A: That’s exactly why I want us to grow together. If everything was always perfect, it wouldn’t be real. Arguments, disagreements, messy moments—those aren’t flaws, they’re the foundation of something deeper. I’m someone who’s terrified of losing the people I love. I always say sorry first, not out of weakness, but because I care more about us than my ego. So even if things get rough, I won’t give up on you easily. I’m staying. For real.</div>
+                </div>
+                <div class="qa-item">
+                    <div class="qa-question">Q: What if one of us cheats?</div>
+                    <div class="qa-answer">A: I’ll keep it real with you—this one hurts to even imagine. But if it ever happened... I wouldn’t turn cold. If you were genuinely sorry and willing to change, I’d give you a second chance. I believe in redemption more than revenge. But if you wanted to walk away, I’d let you go and hope you find happiness—even if it’s not with me. Because real love is not about possession, it’s about peace.</div>
+                </div>
+                <div class="qa-item">
+                    <div class="qa-question">Q: What about careers and family pressure?</div>
+                    <div class="qa-answer">A: Look, I love my parents, but if being with you meant standing against them—I’d still choose you. I’m not scared of starting small, I’m confident in my ability to build a future from scratch. I’ll hustle, study, work, and do whatever it takes to support a life for us—even in the worst case. And I promise, I’ll never expect you to sacrifice your dreams for me. We’ll rise together, or we won’t rise at all. That’s how I see it.</div>
+                </div>
+                <div class="qa-item">
+                    <div class="qa-question">Q: What if I say no?</div>
+                    <div class="qa-answer">A: If you say no, my love, I will respect your decision, and I will always love you. I’ll never push you or make you feel guilty. I believe that if you’re destined to be with me, the universe will bring us together in time. I will wait patiently, always keeping you in my heart, knowing that if it's meant to be, it will happen.</div>
+                </div>
+                <div class="qa-item">
+                    <div class="qa-question">Q: What if our parents don’t approve?</div>
+                    <div class="qa-answer">A: That’s something we’ll face when the time comes, but for now, I believe it’s about what’s in our hearts. I don’t care much about what my dad thinks, but I always take my mom’s opinion into account. I know she will support me as long as I am happy. As for your family, I will do everything I can to make them see me for who I truly am. I’ll work hard to earn their love and respect through kindness, patience, and understanding. I’ll prove to them that I’m here for you, no matter what.</div>
+                </div>
+                <div class="qa-item">
+                    <div class="qa-question">Q: What if this is just a feeling, and not real love?</div>
+                    <div class="qa-answer">A: Love isn’t always something that can be defined by a single moment. It’s complex—it grows, it changes, and sometimes it takes time to understand. It can start fast, or it can build slowly. What I know is this: I’m committed to not giving up, no matter how long it takes, no matter the challenges. I’ll stay true to my feelings, my decisions, and my love for you. And I’ll keep nurturing it, because love isn’t something you give up on easily.</div>
+                </div>
+            </div>
+
+            <!-- Final Doubt Block -->
+            <div class="content-block" id="doubtBlock">
+                <h2>If you have any doubt, just write it below and I will reply to you</h2>
+            </div>
+            <section id="doubtCommentsSection" aria-live="polite">
+          <form id="doubtCommentForm" onsubmit="return false;">
+            <input id="doubtCommentName" type="text" placeholder="Your name" maxlength="40" required>
+            <textarea id="doubtCommentText" placeholder="Ask your doubt..." maxlength="400" required></textarea>
+            <button id="doubtCommentSubmit" type="button">Post</button>
+          </form>
+          <ul id="doubtCommentList" aria-label="Doubt Comments list"></ul>
+        </section>
+        </div>
+    </div>
+    <!-- add sparkle overlay (non-intrusive) -->
+    <div class="sparkles" aria-hidden="true"></div>
+
+    <script>
+        // Initialize particles
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: ['#ff6b6b', '#ffd93d', '#4ecdc4', '#45b7d1'] },
+                shape: { type: 'circle' },
+                opacity: { value: 0.5, random: false },
+                size: { value: 3, random: true },
+                line_linked: { enable: false },
+                move: {
+                    enable: true,
+                    speed: 1,
+                    direction: 'none',
+                    random: false,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: { enable: true, mode: 'repulse' },
+                    onclick: { enable: true, mode: 'push' },
+                    resize: true
+                },
+                modes: {
+                    grab: { distance: 400, line_linked: { opacity: 1 } },
+                    bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
+                    repulse: { distance: 200, duration: 0.4 },
+                    push: { particles_nb: 4 },
+                    remove: { particles_nb: 2 }
+                }
+            },
+            retina_detect: true
+        });
+
+        // Music Control
+        const music = document.getElementById('backgroundMusic');
+        const musicToggle = document.getElementById('musicToggle');
+        const musicIcon = document.getElementById('musicIcon');
+        let isMuted = false;
+
+        musicToggle.addEventListener('click', () => {
+            if (isMuted) {
+                music.play();
+                musicIcon.className = 'fas fa-volume-up';
+                isMuted = false;
+            } else {
+                music.pause();
+                musicIcon.className = 'fas fa-volume-mute';
+                isMuted = true;
+            }
+        });
+
+        // Auto-play music (with user interaction)
+        document.addEventListener('click', () => {
+            if (!isMuted && music.paused) {
+                music.play().catch(e => {});
+            }
+        }, { once: true });
+
+        // Photo Intro Sequence
+        function startPhotoSequence() {
+            const photos = ['#photo1', '#photo2', '#photo3'];
+            const directions = [
+                { x: -200, y: 0 },    // from left
+                { x: 0, y: -200 },    // from top
+                { x: 0, y: 200 }      // from bottom
+            ];
+
+            // Set initial positions
+            photos.forEach((photo, index) => {
+                gsap.set(photo, {
+                    x: directions[index].x,
+                    y: directions[index].y,
+                    opacity: 0
+                });
+            });
+
+            const tl = gsap.timeline();
+
+            photos.forEach((photo, index) => {
+                tl.to(photo, {
+                    duration: 1,
+                    x: 0,
+                    y: 0,
+                    opacity: 1,
+                    ease: "power2.out"
+                }, index * 0.8)
+                .to(photo, {
+                    duration: 0.8,
+                    opacity: 0,
+                    scale: 1.1,
+                    ease: "power2.in"
+                }, index * 0.8 + 1.5);
+            });
+
+            tl.to('#photoIntro', {
+                duration: 1,
+                opacity: 0,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    document.getElementById('photoIntro').style.display = 'none';
+                    showMainContent();
+                }
+            });
+        }
+
+        // Show Main Content
+        function showMainContent() {
+            gsap.to('#mainContent', {
+                duration: 1,
+                opacity: 1,
+                ease: "power2.out"
+            });
+
+            // Animate content blocks
+            gsap.to('.content-block', {
+                duration: 1,
+                opacity: 1,
+                y: 0,
+                stagger: 0.2,
+                ease: "power2.out",
+                delay: 0.5
+            });
+
+            startFloatingHearts();
+        }
+
+        // Floating Hearts
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerHTML = Math.random() > 0.5 ? '❤️' : '✨';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 7000);
+        }
+
+        function startFloatingHearts() {
+            setInterval(createFloatingHeart, 2000);
+        }
+
+        // Confession Button Click - Show all confession blocks and their comment blocks
+        document.getElementById('confessionBtn').addEventListener('click', () => {
+            document.getElementById('confessionsWrapper').style.display = 'block';
+            document.querySelectorAll('.confession-block').forEach(block => {
+                setTimeout(() => block.classList.add('show'), 50);
+            });
+            document.querySelectorAll('.confession-comments').forEach(block => {
+                block.style.display = 'block';
+            });
+            document.querySelector('.confession-button').style.display = 'none';
+            document.getElementById('confessionBlock1').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Penguin cursor follow logic with message and sleep functions
+        (function(){
+            const penguin = document.getElementById("penguin");
+            const penguinImg = penguin.querySelector("img");
+            let idleTimer, sleepTimer;
+            let isIdle = false, isSleeping = false;
+
+            // Penguin messages
+            const penguinMessages = [
+                "You make my heart smile ❤️",
+                "You're my favorite person 🌟",
+                "Just thinking of you... 💭",
+                "You're amazing! ✨",
+                "Let's create magic together 🌈",
+                "You light up my world 🌞",
+                "Every moment with you is special 💫",
+                "Your smile is everything 🌸",
+                "You're my favorite thought 💭",
+                "Can't help falling for you 💘"
+            ];
+            function showPenguinMessage() {
+                const msgText = penguinMessages[Math.floor(Math.random() * penguinMessages.length)];
+                const msg = document.createElement("div");
+                msg.className = "message";
+                msg.innerText = msgText;
+                msg.style.background = "#6c5ce7";
+                msg.style.left = `${Math.random() * 70 + 15}%`;
+                msg.style.top = `${Math.random() * 70 + 15}%`;
+                document.body.appendChild(msg);
+                setTimeout(() => msg.remove(), 2200);
+            }
+
+            // Show message on click
+            penguin.addEventListener("click", () => {
+                const actions = ["flip", "belly", "jump", "spin"];
+                const randomAction = actions[Math.floor(Math.random() * actions.length)];
+                penguin.classList.add(randomAction);
+                setTimeout(() => penguin.classList.remove(randomAction), 1200);
+                showPenguinMessage();
+            });
+
+            // Show random message every 10 seconds
+            setInterval(showPenguinMessage, 10000);
+
+            document.addEventListener("mousemove", (e) => {
+                clearTimeout(idleTimer);
+                clearTimeout(sleepTimer);
+                penguin.classList.remove("idle", "sleeping", "waddle");
+                penguinImg.style.opacity = 1;
+                isIdle = false; isSleeping = false;
+                const x = e.clientX - penguin.offsetWidth / 2;
+                const y = e.clientY - penguin.offsetHeight / 2;
+                penguin.style.transform = `translate(${x}px, ${y}px)`;
+                penguin.classList.add("waddle");
+                setTimeout(() => penguin.classList.remove("waddle"), 400);
+                idleTimer = setTimeout(() => {
+                    penguin.classList.add("idle");
+                    isIdle = true;
+                }, 3000);
+                sleepTimer = setTimeout(() => {
+                    penguin.classList.remove("idle");
+                    penguin.classList.add("sleeping");
+                    isSleeping = true;
+                    spawnZzz();
+                }, 10000);
+            });
+            function spawnZzz() {
+                if (!isSleeping) return;
+                const z = document.createElement("div");
+                z.className = "zzz";
+                z.innerText = "Zzz...";
+                z.style.left = `${penguin.getBoundingClientRect().left + 60}px`;
+                z.style.top = `${penguin.getBoundingClientRect().top - 20}px`;
+                document.body.appendChild(z);
+                setTimeout(() => z.remove(), 2000);
+                if (isSleeping) setTimeout(spawnZzz, 2000);
+            }
+        })();
+
+        // Initialize everything
+        window.addEventListener('load', () => {
+            startPhotoSequence();
+            startCarousel();
+            animateOnScroll();
+        });
+
+        // Mobile touch improvements
+        if ('ontouchstart' in window) {
+            document.body.style.cursor = 'pointer';
+        }
+    </script>
+    <script type="module">
+      // Use the new Firebase config from your prompt
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+      import { getDatabase, ref, push, onChildAdded, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+
+      // New Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyBTcZhqWNtQfzwmVSLUj-UVrNSmfso8M-E",
+        authDomain: "comment-42a8d.firebaseapp.com",
+        databaseURL: "https://comment-42a8d-default-rtdb.firebaseio.com",
+        projectId: "comment-42a8d",
+        storageBucket: "comment-42a8d.firebasestorage.app",
+        messagingSenderId: "907945120076",
+        appId: "1:907945120076:web:eb18596749736cabe2bfe9",
+        measurementId: "G-CYY165F7ZN"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+      const commentsRef = ref(db, 'comments');
+
+      const nameInput = document.getElementById('commentName');
+      const textInput = document.getElementById('commentText');
+      const submitBtn = document.getElementById('commentSubmit');
+      const listEl = document.getElementById('commentList');
+
+      // sanitize minimal (prevent bare HTML)
+      function sanitize(str){
+        return String(str || '').replaceAll('<','&lt;').replaceAll('>','&gt;').trim();
+      }
+
+      function renderComment(data){
+        const li = document.createElement('li');
+        li.className = 'commentItem';
+        const meta = document.createElement('div');
+        meta.className = 'commentMeta';
+        const ts = data.createdAt || Date.now();
+        const date = (typeof ts === 'number') ? new Date(ts) : new Date();
+        meta.textContent = `${sanitize(data.name || 'Anonymous')} • ${date.toLocaleString()}`;
+        const txt = document.createElement('div');
+        txt.textContent = sanitize(data.text || '');
+        li.appendChild(meta);
+        li.appendChild(txt);
+        listEl.prepend(li);
+      }
+
+      // Listen for new comments in realtime
+      onChildAdded(commentsRef, (snapshot) => {
+        const val = snapshot.val();
+        if(val) renderComment(val);
+      });
+
+      // submit handler
+      submitBtn.addEventListener('click', async () => {
+        const name = sanitize(nameInput.value) || 'Anonymous';
+        const text = sanitize(textInput.value);
+        if(!text) return;
+        submitBtn.disabled = true;
+        try {
+          await push(commentsRef, { name, text, createdAt: Date.now() });
+          nameInput.value = '';
+          textInput.value = '';
+        } catch(e){
+          console.error('Comment save failed', e);
+          alert('Failed to post. Check console.');
+        } finally {
+          submitBtn.disabled = false;
+        }
+      });
+
+      // About You Comments Firebase logic
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+      import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
+
+      // About You comments refs
+      const aboutYouCommentsRef = ref(db, 'aboutYouComments');
+      const aboutYouNameInput = document.getElementById('aboutYouCommentName');
+      const aboutYouTextInput = document.getElementById('aboutYouCommentText');
+      const aboutYouSubmitBtn = document.getElementById('aboutYouCommentSubmit');
+      const aboutYouListEl = document.getElementById('aboutYouCommentList');
+
+      function renderAboutYouComment(data){
+        const li = document.createElement('li');
+        li.className = 'commentItem';
+        const meta = document.createElement('div');
+        meta.className = 'commentMeta';
+        const ts = data.createdAt || Date.now();
+        const date = (typeof ts === 'number') ? new Date(ts) : new Date();
+        meta.textContent = `${sanitize(data.name || 'Anonymous')} • ${date.toLocaleString()}`;
+        const txt = document.createElement('div');
+        txt.textContent = sanitize(data.text || '');
+        li.appendChild(meta);
+        li.appendChild(txt);
+        aboutYouListEl.prepend(li);
+      }
+
+      // Listen for new About You comments in realtime
+      onChildAdded(aboutYouCommentsRef, (snapshot) => {
+        const val = snapshot.val();
+        if(val) renderAboutYouComment(val);
+      });
+
+      // submit handler for About You comments
+      aboutYouSubmitBtn.addEventListener('click', async () => {
+        const name = sanitize(aboutYouNameInput.value) || 'Anonymous';
+        const text = sanitize(aboutYouTextInput.value);
+        if(!text) return;
+        aboutYouSubmitBtn.disabled = true;
+        try {
+          await push(aboutYouCommentsRef, { name, text, createdAt: Date.now() });
+          aboutYouNameInput.value = '';
+          aboutYouTextInput.value = '';
+        } catch(e){
+          console.error('About You comment save failed', e);
+          alert('Failed to post. Check console.');
+        } finally {
+          aboutYouSubmitBtn.disabled = false;
+        }
+      });
+
+      // Per-confession comments logic
+      const confessionCommentForms = document.querySelectorAll('.confessionCommentForm');
+    confessionCommentForms.forEach((form, idx) => {
+        const confessionNum = form.getAttribute('data-confession');
+        const nameInput = form.querySelector('.confessionCommentName');
+        const textInput = form.querySelector('.confessionCommentText');
+        const submitBtn = form.querySelector('.confessionCommentSubmit');
+        const listEl = form.parentElement.querySelector('.confessionCommentList');
+        const confessionCommentsRef = ref(db, `confessionComments${confessionNum}`);
+
+        function sanitize(str){
+            return String(str || '').replaceAll('<','&lt;').replaceAll('>','&gt;').trim();
+        }
+        function renderComment(data){
+            const li = document.createElement('li');
+            li.className = 'commentItem';
+            const meta = document.createElement('div');
+            meta.className = 'commentMeta';
+            const ts = data.createdAt || Date.now();
+            const date = (typeof ts === 'number') ? new Date(ts) : new Date();
+            meta.textContent = `${sanitize(data.name || 'Anonymous')} • ${date.toLocaleString()}`;
+            const txt = document.createElement('div');
+            txt.textContent = sanitize(data.text || '');
+            li.appendChild(meta);
+            li.appendChild(txt);
+            listEl.prepend(li);
+        }
+        onChildAdded(confessionCommentsRef, (snapshot) => {
+            const val = snapshot.val();
+            if(val) renderComment(val);
+        });
+        submitBtn.addEventListener('click', async () => {
+            const name = sanitize(nameInput.value) || 'Anonymous';
+            const text = sanitize(textInput.value);
+            if(!text) return;
+            submitBtn.disabled = true;
+            try {
+                await push(confessionCommentsRef, { name, text, createdAt: Date.now() });
+                nameInput.value = '';
+                textInput.value = '';
+            } catch(e){
+                alert('Failed to post. Check console.');
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+    });
+
+    // Doubt Comments logic
+    const doubtCommentsRef = ref(db, 'doubtComments');
+    const doubtNameInput = document.getElementById('doubtCommentName');
+    const doubtTextInput = document.getElementById('doubtCommentText');
+    const doubtSubmitBtn = document.getElementById('doubtCommentSubmit');
+    const doubtListEl = document.getElementById('doubtCommentList');
+    function sanitize(str){
+        return String(str || '').replaceAll('<','&lt;').replaceAll('>','&gt;').trim();
+    }
+    function renderDoubtComment(data){
+        const li = document.createElement('li');
+        li.className = 'commentItem';
+        const meta = document.createElement('div');
+        meta.className = 'commentMeta';
+        const ts = data.createdAt || Date.now();
+        const date = (typeof ts === 'number') ? new Date(ts) : new Date();
+        meta.textContent = `${sanitize(data.name || 'Anonymous')} • ${date.toLocaleString()}`;
+        const txt = document.createElement('div');
+        txt.textContent = sanitize(data.text || '');
+        li.appendChild(meta);
+        li.appendChild(txt);
+        doubtListEl.prepend(li);
+    }
+    onChildAdded(doubtCommentsRef, (snapshot) => {
+        const val = snapshot.val();
+        if(val) renderDoubtComment(val);
+    });
+    doubtSubmitBtn.addEventListener('click', async () => {
+        const name = sanitize(doubtNameInput.value) || 'Anonymous';
+        const text = sanitize(doubtTextInput.value);
+        if(!text) return;
+        doubtSubmitBtn.disabled = true;
+        try {
+            await push(doubtCommentsRef, { name, text, createdAt: Date.now() });
+            doubtNameInput.value = '';
+            doubtTextInput.value = '';
+        } catch(e){
+            alert('Failed to post. Check console.');
+        } finally {
+            doubtSubmitBtn.disabled = false;
+        }
+    });
+
+    // ...existing code...
+    </script>
+</body>
+</html>
